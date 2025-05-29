@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Property Survey Report - 11 Russell Street</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .nav-link.active { background-color: #0D9488; color: white; }
+        .nav-link:hover { background-color: #F0F9FF; color: #0D9488;}
+        .condition-rating-1 { border-left: 5px solid #22C55E; } /* Green */
+        .condition-rating-2 { border-left: 5px solid #FACC15; } /* Yellow */
+        .condition-rating-3 { border-left: 5px solid #EF4444; } /* Red */
+        .condition-rating-ni { border-left: 5px solid #9CA3AF; } /* Gray */
+        .sidebar { scrollbar-width: thin; scrollbar-color: #0D9488 #F0F9FF; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; 
+            max-height: 450px; 
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .image-gallery { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.25rem; 
+            margin-top: 0.5rem; 
+            margin-bottom: 0.5rem; 
+        }
+        .cost-source {
+            font-size: 0.7rem;
+            color: #4B5563; /* gray-600 */
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-neutral-800">
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <aside class="w-full md:w-72 bg-orange-100 text-neutral-700 p-4 space-y-2 shadow-lg md:h-screen md:sticky md:top-0 sidebar overflow-y-auto">
+            <h1 class="text-2xl font-bold text-amber-700 mb-6 border-b-2 border-amber-600 pb-2">11 Russell St - Survey</h1>
+            <nav>
+                <button data-target="overview" class="nav-link w-full text-left px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 ease-in-out">📋 Property Overview</button>
+                <div>
+                    <button class="nav-link-parent w-full text-left px-3 py-2.5 rounded-md text-sm font-medium flex justify-between items-center">
+                         Defects Details <span class="arrow transform transition-transform duration-300">▶</span>
+                    </button>
+                    <div class="nav-submenu hidden pl-4 mt-1 space-y-1">
+                        <button data-target="defects-outside" class="nav-link w-full text-left px-3 py-2 rounded-md text-xs">🏠 Outside Property</button>
+                        <button data-target="defects-inside" class="nav-link w-full text-left px-3 py-2 rounded-md text-xs">🛋️ Inside Property</button>
+                        <button data-target="defects-services" class="nav-link w-full text-left px-3 py-2 rounded-md text-xs">⚡ Services</button>
+                        <button data-target="defects-grounds" class="nav-link w-full text-left px-3 py-2 rounded-md text-xs">🌳 Grounds</button>
+                    </div>
+                </div>
+                <button data-target="surveyor-opinion" class="nav-link w-full text-left px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 ease-in-out">🧐 Surveyor's Opinion</button>
+                <div>
+                    <button class="nav-link-parent w-full text-left px-3 py-2.5 rounded-md text-sm font-medium flex justify-between items-center">
+                         Financial Insights <span class="arrow transform transition-transform duration-300">▶</span>
+                    </button>
+                    <div class="nav-submenu hidden pl-4 mt-1 space-y-1">
+                        <button data-target="financial-surveyor-costs" class="nav-link w-full text-left px-3 py-2 rounded-md text-xs">💰 Surveyor's Quoted Costs</button>
+                        <button data-target="financial-repair-costs" class="nav-link w-full text-left px-3 py-2 rounded-md text-xs">🔧 Repair Costs (Gemini Est.)</button>
+                        <button data-target="financial-upgrade-costs" class="nav-link w-full text-left px-3 py-2 rounded-md text-xs">💡 Upgrade Costs (Gemini Est.)</button>
+                    </div>
+                </div>
+                <button data-target="summary-actions" class="nav-link w-full text-left px-3 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 ease-in-out">📝 Summary & Actions</button>
+            </nav>
+        </aside>
+
+        <main class="flex-1 p-6 md:p-10 bg-white shadow-inner overflow-y-auto">
+            <section id="overview" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">📋 Property Overview</h2>
+                <div class="bg-orange-50 p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">Property Details</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li><strong>Address:</strong> 11 Russell Street, Stafford, ST16 2DU</li>
+                        <li><strong>Type:</strong> 3-bedroom end-terrace home, freehold.</li>
+                        <li><strong>Estimated Build Period:</strong> 1900 - 1929.</li>
+                        <li><strong>Floor Area:</strong> 81 sqm.</li>
+                        <li><strong>Construction:</strong> Solid brick walls, pitched roof, double glazed windows.</li>
+                        <li><strong>Heating:</strong> Boilers and radiators, mains gas.</li>
+                        <li><strong>EPC Rating:</strong> D (Loft insulation 100mm noted in original EPC, survey indicates 270mm present).</li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">Surveyor's Overall Assessment (from survey p.8)</h3>
+                    <p class="text-sm leading-relaxed">"This property is considered to be a reasonable proposition for purchase provided you are prepared to accept the cost and inconvenience of dealing with the various repair and improvement works reported. These deficiencies are common in properties of this age and type. Provided that necessary works are carried out to a satisfactory standard we see no reason why there should be any special difficulty on resale in normal market conditions... It is important that the report should be considered in its entirety before proceeding."</p>
+                    <h4 class="text-md font-semibold text-amber-600 mt-4 mb-2">Key Concerns (CR3 Items from Survey):</h4>
+                    <ul class="list-disc list-inside text-sm space-y-1">
+                        <li>D4 Main Walls</li><li>E1 Roofs (Structure)</li><li>E3 Walls and partitions</li><li>E7 Woodwork (e.g., staircase joinery)</li><li>E9 Other (Cellar, Smoke/CO Alarms)</li><li>F1 Electricity</li><li>F2 Gas/oil</li><li>F4 Heating</li><li>F5 Water heating</li><li>G2 Permanent outbuildings</li>
+                    </ul>
+                </div>
+                 <div class="bg-orange-50 p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">Local Environment (from survey p.20)</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Flood zone 1 (minimal risk).</li>
+                        <li>Subsoil: Clay/mudstone/sand (can be subject to seasonal change). Importance of sound drainage and maintained vegetation noted.</li>
+                        <li>Radon: Lowest likelihood area.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="defects-outside" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">🏠 Outside Property Defects</h2>
+                <div id="D1" class="defect-card condition-rating-1 bg-green-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-green-700">D1. Chimney Stacks (CR: 1)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Brick-built, appears structurally sound and straight. Regular maintenance advised.</p>
+                    <div class="image-gallery"></div>
+                </div>
+                <div id="D2" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">D2. Roof Coverings (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Natural slate. Ageing, tingles visible (rusting nails, potential slippage). Monitor. Mortar to roof edge cracked. Repairs anticipated.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Monitor slates, repair/repoint verge mortar.</p>
+                    <p class="text-sm"><strong>Estimated Cost (Verge Mortar):</strong> £700 - £1,100 <span class="cost-source">(Gemini Estimate)</span> (inc. scaffolding).</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Repairs verge mortar £800, Scaffold £500 <span class="cost-source">(Surveyor Estimate - p.11)</span>.</p>
+                </div>
+                <div id="D3" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">D3. Rainwater Pipes and Gutters (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: uPVC, reasonable. Regular cleaning/re-sealing needed. Faded, could be brittle. Watertightness unconfirmed.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Clean, check/reseal joints. Potential full replacement.</p>
+                    <p class="text-sm"><strong>Est. Cost (Minor Repairs):</strong> £150 - £300 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Full Replacement):</strong> £700 - £1,200 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+                <div id="D4" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">D4. Main Walls (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Solid masonry. Render in poor condition: deep cracks, blistered paint, loose sections. Extensive repairs/re-rendering needed.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Hack off defective render, prepare, re-render. Possible full re-render.</p>
+                    <p class="text-sm"><strong>Est. Cost (Patch Repairs):</strong> £1,000 - £2,500 <span class="cost-source">(Gemini Estimate)</span> per elevation. <strong>(Full Re-render one elevation):</strong> £3,500 - £5,500 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Lime Render):</strong> £5,000 - £8,000 <span class="cost-source">(Gemini Estimate)</span> per elevation.</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Remove render from solid masonry £4,000 <span class="cost-source">(Surveyor Estimate - p.11)</span>.</p>
+                </div>
+                <div id="D5" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">D5. Windows (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: uPVC double-glazed. Check FENSA. Condensation between panes on front elevation. Replace defective panes.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Replace misted/failed double-glazed units.</p>
+                    <p class="text-sm"><strong>Est. Cost (1 unit):</strong> £100 - £200 <span class="cost-source">(Gemini Estimate)</span>. <strong>(3-4 units):</strong> £350 - £700 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Replace windows that have misted windowpanes £600 per window <span class="cost-source">(Surveyor Estimate - p.11)</span>.</p>
+                </div>
+                <div id="D6" class="defect-card condition-rating-1 bg-green-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-green-700">D6. Outside Doors (CR: 1)</h4>
+                     <p class="text-xs text-gray-600 mb-1">Surveyor: Double-glazed uPVC, reasonable condition. Safety glazing appears present.</p>
+                     <div class="image-gallery"></div>
+                </div>
+                 <div id="D8" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">D8. Other Joinery and Finishes (Fascias) (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Timber fascia boards, serviceable. Require regular redecoration.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Prepare and repaint timber fascias.</p>
+                    <p class="text-sm"><strong>Est. Cost (Repainting):</strong> £400 - £800 <span class="cost-source">(Gemini Estimate)</span>. <strong>(uPVC Replacement):</strong> £1,200 - £2,000 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+            </section>
+
+            <section id="defects-inside" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">🛋️ Inside Property Defects</h2>
+                <div id="E1" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">E1. Roofs (Structure/Roof Void) (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Damp timbers, active woodworm, torn felt, incomplete party wall, limited ventilation, signs of vermin. Insulation 270mm (complies).</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Specialist timber survey/treatment, felt repair, party wall completion, improve ventilation, pest control, address damp source.</p>
+                    <p class="text-sm"><strong>Est. Costs:</strong> Timber Survey: £200-£400 <span class="cost-source">(Gemini Estimate)</span>. Woodworm Treatment: £400-£800 <span class="cost-source">(Gemini Estimate)</span> (+repairs). Felt Repair: £200-£400 <span class="cost-source">(Gemini Estimate)</span>. Party Wall: £800-£1,500 <span class="cost-source">(Gemini Estimate)</span>. Ventilation: £300-£600 <span class="cost-source">(Gemini Estimate)</span>. Pest Control: £150-£300 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Costs: Competent roofer to inspect roof timbers and quote for repairs £300; Repair torn felt £600; Complete party wall to finish at roof line £1,500; Pest control £200 <span class="cost-source">(Surveyor Estimate - p.12)</span>.</p>
+                </div>
+                <div id="E2" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">E2. Ceilings (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Lath & plaster/plasterboard. Minor irregularities/shrinkage cracks. Cosmetic works on redecoration.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Fill cracks, redecorate. Possible overboarding if extensive.</p>
+                    <p class="text-sm"><strong>Est. Cost (Minor repairs/room):</strong> £150-£300 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Overboarding/skimming room):</strong> £500-£800 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+                 <div id="E3" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">E3. Walls and Partitions (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Dampness internally on external walls, suspected from defective external render. PCA damp specialist recommended.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Address external defects (D4). Damp specialist survey. Possible internal treatments.</p>
+                    <p class="text-sm"><strong>Est. Cost (Damp Survey):</strong> £250-£450 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Internal Treatment/wall):</strong> £500-£1,000 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Damp Survey £400 <span class="cost-source">(Surveyor Estimate - p.12)</span>.</p>
+                </div>
+                 <div id="E4" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">E4. Floors (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Ground floor solid concrete. Upper floors suspended timber, minor spring/unevenness. Floor coverings old/worn.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Replace worn floor coverings.</p>
+                    <p class="text-sm"><strong>Est. Cost (New coverings, 3-bed house):</strong> £2,000 - £4,500 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+                <div id="E5" class="defect-card condition-rating-ni bg-gray-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-gray-700">E5. Fireplaces, Chimney Breasts and Flues (CR: NI)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor states "No fireplace" on p49, but property description notes decommissioned fireplace. Assumed decommissioned. Ensure capped/ventilated.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Ensure safe capping & ventilation.</p>
+                    <p class="text-sm"><strong>Est. Cost (Check/Install Vent/Cap):</strong> £150 - £300 <span class="cost-source">(Gemini Estimate)</span> per flue.</p>
+                </div>
+                <div id="E6" class="defect-card condition-rating-1 bg-green-50 p-4 rounded-lg shadow"> <h4 class="text-lg font-semibold text-green-700">E6. Built-in Fittings (Kitchen) (CR: 1)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Units basic, wear/tear. Consider replacement. Wood worktops need maintenance. Canopy filter hood, ideally extract to exterior. Electric hob - check cert.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Improve extraction. Consider refurbishment.</p>
+                    <p class="text-sm"><strong>Est. Cost (Extractor):</strong> £250-£450 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Basic Refurb):</strong> £2,500-£5,000 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Full New Kitchen):</strong> £6,000-£12,000 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Install extractor that vents to outside £300 <span class="cost-source">(Surveyor Estimate - p.12)</span>.</p>
+                </div>
+                 <div id="E7" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">E7. Woodwork (Staircase, Doors, Skirtings) (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Much joinery original/dated. Lounge doors no safety glazing. Staircase firm, handrail satisfactory.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Replace/film non-safety glass in lounge doors.</p>
+                    <p class="text-sm"><strong>Est. Cost (Replace glass 2 doors):</strong> £200-£400 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Film):</strong> £80-£150 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+                 <div id="E8" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">E8. Bathroom Fittings (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Dated/worn but serviceable. Consider replacement. Provide extract ventilation.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Install external extractor fan.</p>
+                    <p class="text-sm"><strong>Est. Cost (Extractor):</strong> £250-£450 <span class="cost-source">(Gemini Estimate)</span>. <strong>(New Suite):</strong> £2,500-£5,000 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Install extractor that vents to outside £300 <span class="cost-source">(Surveyor Estimate - p.12)</span>.</p>
+                </div>
+                 <div id="E9" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">E9. Other (Cellar, Smoke/CO Alarms) (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Smoke alarms - replace if old. Cellar: No handrail to stairs (urgent H&S issue). Inherently damp.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Install cellar stair handrail. Install/replace smoke/CO alarms.</p>
+                    <p class="text-sm"><strong>Est. Costs:</strong> Handrail: £150-£300 <span class="cost-source">(Gemini Estimate)</span>. Alarms (hardwired set): £250-£500 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Cost (Smoke & CO Alarms): Install smoke and Carbon monoxide detectors - These should ideally be hardwired. £200 per smoke or CO detector <span class="cost-source">(Surveyor Estimate - p.13)</span>.</p>
+                </div>
+            </section>
+
+            <section id="defects-services" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">⚡ Services Defects</h2>
+                 <div id="F1" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">F1. Electricity (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Dated fuse board in cellar. No last test date. Concerns re: age/safety. Recommend EICR. Likely rewire needed.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> EICR. Budget for potential full rewire.</p>
+                    <p class="text-sm"><strong>Est. Cost (EICR):</strong> £180-£300 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Full Rewire):</strong> £4,500 - £7,500 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Obtain reports or EICR by a regulated electrician £250 <span class="cost-source">(Surveyor Estimate - p.13)</span>.</p>
+                </div>
+                <div id="F2" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">F2. Gas/Oil (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Gas meter in hall. No recent safety test evidence. Inspect by Gas Safe engineer.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Gas Safety Certificate (CP12).</p>
+                    <p class="text-sm"><strong>Est. Cost (Gas Safety Check):</strong> £80-£150 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Obtain Gas safety certificate from a qualified gas engineer £150 <span class="cost-source">(Surveyor Estimate - p.13)</span>.</p>
+                </div>
+                <div id="F3" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">F3. Water (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Most pipework concealed. Internal stop tap hidden, confirm location.</p>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Locate and test internal stop tap.</p>
+                    <p class="text-sm"><strong>Est. Cost (Plumber to locate/test):</strong> £80-£150 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+                 <div id="F4" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">F4. Heating (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Gas boiler in bedroom, relatively modern, not operating at inspection. No recent test. Inspect by Gas Safe engineer.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Full heating system check and boiler service.</p>
+                    <p class="text-sm"><strong>Est. Cost (Service & Check):</strong> £100-£200 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                    <p class="text-sm">Surveyor's Budget Cost: Obtain Gas safety certificate from a qualified gas engineer. Included in F2 cost <span class="cost-source">(Surveyor Estimate - p.13)</span>.</p>
+                </div>
+                <div id="F6" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">F6. Drainage (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Appears mains connected, likely shared. Recommend utility searches. Chambers accessible okay. Soil pipe uPVC, serviceable.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Utility searches. Consider CCTV drain survey.</p>
+                    <p class="text-sm"><strong>Est. Cost (CCTV Survey):</strong> £250-£450 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+            </section>
+
+            <section id="defects-grounds" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">🌳 Grounds Defects</h2>
+                <div id="G2" class="defect-card condition-rating-3 bg-red-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-red-700">G2. Permanent Outbuildings (Brick Sheds) (CR: 3)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Brick outbuilding with flat concrete roof. Believed suffering from subsidence (large cracks). Structural engineer assessment recommended.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Structural engineer's report. Potential underpinning or demolition/rebuild.</p>
+                    <p class="text-sm"><strong>Est. Cost (Engineer Report):</strong> £500-£900 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Demolish Shed):</strong> £800-£1,500 <span class="cost-source">(Gemini Estimate)</span>. <strong>(Rebuild Small Shed):</strong> £4,000-£8,000 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+                 <div id="G3" class="defect-card condition-rating-2 bg-yellow-50 p-4 rounded-lg shadow">
+                    <h4 class="text-lg font-semibold text-yellow-700">G3. Other (Gardens, Boundaries, Parking) (CR: 2)</h4>
+                    <p class="text-xs text-gray-600 mb-1">Surveyor: Gardens poor, need landscaping. Check Deed Plans for boundaries. Boundary responsibilities unknown. On-street parking.</p>
+                    <div class="image-gallery"></div>
+                    <p class="text-sm"><strong>Necessary Work:</strong> Landscaping. Clarify boundaries (legal). Repair/replace fencing.</p>
+                    <p class="text-sm"><strong>Est. Cost (Garden Tidy):</strong> £500-£1,500 <span class="cost-source">(Gemini Estimate)</span>. <strong>(New Fencing/panel):</strong> £80-£150 <span class="cost-source">(Gemini Estimate)</span>.</p>
+                </div>
+            </section>
+
+            <section id="surveyor-opinion" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">🧐 Surveyor's Opinion on Purchase</h2>
+                <div class="bg-orange-50 p-6 rounded-lg shadow">
+                    <p class="text-sm leading-relaxed">The property at 11 Russell Street, Stafford, presents as a characteristically challenging but potentially rewarding purchase, typical of its 1900-1929 era. Its solid brick construction and traditional layout are appealing, but as with many properties of this age, it comes with a significant list of defects and required maintenance, many of which are rated as Condition Rating 3 (serious/urgent) or Condition Rating 2 (requiring attention).</p>
+                    <h4 class="text-md font-semibold text-amber-600 mt-4 mb-2">Key Considerations for Purchase:</h4>
+                    <ol class="list-decimal list-inside space-y-1 text-sm">
+                        <li><strong>Immediate and Significant Costs:</strong> External render, roof structure (damp timbers, woodworm, torn felt, incomplete party wall, vermin), electrical system (likely full rewire), and outbuilding (subsidence) require urgent attention. The surveyor's report (p.11-13) notes indicative costs such as: Remove render £4,000 <span class="cost-source">(Surveyor Estimate)</span>, Roofer inspection £300 <span class="cost-source">(Surveyor Estimate)</span>, Repair torn felt £600 <span class="cost-source">(Surveyor Estimate)</span>, Complete party wall £1,500 <span class="cost-source">(Surveyor Estimate)</span>, EICR £250 <span class="cost-source">(Surveyor Estimate)</span>.</li>
+                        <li><strong>Damp Issues:</strong> Penetrating damp linked to external render defects. Specialist investigation crucial.</li>
+                        <li><strong>Ongoing Maintenance:</strong> Higher than modern counterparts (slate roof, timber fascias).</li>
+                        <li><strong>Safety Concerns:</strong> Electrical system, incomplete loft party wall, no cellar stair handrail, need for modern smoke/CO alarms, non-safety glazing in lounge doors.</li>
+                        <li><strong>Financial Prudence:</strong> Budget a minimum of £15,000 - £25,000 <span class="cost-source">(Gemini Synthesized Estimate based on surveyor and Gemini figures)</span> for the most urgent works, potentially significantly more post-specialist investigations.</li>
+                        <li><strong>Potential vs. Risk:</strong> Offers potential but significant risk and financial uncertainty due to extent of defects.</li>
+                    </ol>
+                    <h4 class="text-md font-semibold text-amber-600 mt-4 mb-2">Recommendation:</h4>
+                    <p class="text-sm leading-relaxed">This property is <strong>only suitable for a purchaser who has significant funds readily available</strong> for immediate and ongoing repairs, and who is experienced with, or prepared for, managing extensive renovation work on an older property.</p>
+                    <p class="text-sm leading-relaxed mt-2"><strong>Before committing to purchase, it is absolutely essential to:</strong> Obtain detailed written quotations for ALL CR3 and significant CR2 items, factor these costs (plus 20-30% contingency) into your budget, and satisfy all legal enquiries. If budget is tight or a quick, trouble-free move is desired, this property is likely unsuitable. The EPC D rating also indicates desirable long-term energy efficiency improvements.</p>
+                </div>
+            </section>
+
+            <section id="financial-surveyor-costs" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">💰 Surveyor's Quoted Costs (from PDF p.11-13)</h2>
+                <p class="text-xs text-gray-500">These are budget costs provided directly by the surveyor in the report. They should be confirmed with detailed contractor quotations.</p>
+                <div class="bg-orange-50 p-6 rounded-lg shadow mb-6">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">Surveyor's Quoted Costs Summary Chart</h3>
+                    <div class="chart-container">
+                        <canvas id="surveyorCostsChart"></canvas>
+                    </div>
+                     <p class="text-center text-xs mt-2 text-gray-500">Chart data based on Surveyor Estimates from PDF.</p>
+                </div>
+                <div class="bg-orange-50 p-6 rounded-lg shadow">
+                    <ul class="list-disc list-inside space-y-2 text-sm">
+                        <li>D2 Roof Coverings: Repairs verge mortar - £800 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>D2 Roof Coverings: Scaffold - £500 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>D4 Main Walls: Remove render from solid masonry - £4,000 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>D5 Windows: Replace windows that have misted windowpanes - £600 per window <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>E1 Roof Structure: Competent roofer to inspect roof timbers and quote for repairs - £300 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>E1 Roof Structure: Repair torn felt - £600 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>E1 Roof Structure: Complete party wall to finish at roof line to act as a fire break - £1,500 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>E1 Roof Structure: Pest control - £200 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>E3 Walls and Partitions: Damp Survey - £400 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>E6 Kitchen: Install extractor that vents to outside - £300 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>E8 Bathroom Fittings: Install extractor that vents to outside - £300 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>F1 Electrics: Obtain reports or EICR by a regulated electrician - £250 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>F2 Gas: Obtain Gas safety certificate from a qualified gas engineer - £150 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>F4 Heating: Obtain Gas safety certificate from a qualified gas engineer - Included in F2 <span class="cost-source">(Surveyor Estimate)</span></li>
+                        <li>E9 Other (Smoke & Carbon Monoxide Alarms): Install smoke and Carbon monoxide detectors - These should ideally be hardwired. - £200 per smoke or CO detector <span class="cost-source">(Surveyor Estimate)</span></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="financial-repair-costs" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">🔧 Financial Focus: Repair Costs (Stafford, May 2025 - Gemini Estimates)</h2>
+                <p class="text-xs text-gray-500">Estimates based on publicly available UK data, projected to May 2025 for Stafford. Add 15-25% contingency. Assumed labour rates: General Builder £200-£280/day; Roofer £220-£320/day; Electrician £280-£400/day; Plasterer £190-£260/day; Plumber/Gas Safe £280-£420/day. All costs in this section are Gemini Estimates unless otherwise specified.</p>
+                <div class="bg-orange-50 p-6 rounded-lg shadow mb-6">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">Repair Cost Summary Chart</h3>
+                    <div class="chart-container">
+                        <canvas id="repairCostsChart"></canvas>
+                    </div>
+                     <p class="text-center text-xs mt-2 text-gray-500">Chart data based on Gemini Estimates.</p>
+                </div>
+                <div class="bg-orange-50 p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">1. Roofing Work (Addressing D2 & E1)</h3>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Immediate Slate Repairs (5-10 slates): £200 - £400 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Verge Mortar Repair (Left Elevation): £700 - £1,100 <span class="cost-source">(Gemini Estimate)</span> (inc. scaffold)</li>
+                        <li>Specialist Timber Survey (Woodworm/Rot): £250 - £450 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Woodworm Treatment (Accessible Timbers): £450 - £850 <span class="cost-source">(Gemini Estimate)</span> (Repairs additional)</li>
+                        <li>Localized Timber Repair/Strengthening (Minor): £500 - £1,500 <span class="cost-source">(Gemini Estimate)</span> (Highly variable)</li>
+                        <li>Repair Torn Roofing Felt (Patch): £250 - £450 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Complete Party Wall in Loft: £900 - £1,600 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Improve Roof Ventilation: £350 - £700 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Pest Control (Loft): £150 - £300 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li><strong>Total Estimated for Prioritised Roofing: £2,500 - £6,000+ <span class="cost-source">(Gemini Estimate)</span></strong> (Excludes full re-roof: £9k-£15k+ <span class="cost-source">(Gemini Estimate)</span>)</li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-6 rounded-lg shadow mt-4">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">2. Electrical Work - Full Rewire (Addressing F1)</h3>
+                     <p class="text-sm mb-2">Strongly anticipated. For 3-bed, 81sqm end-terrace.</p>
+                    <p class="text-sm font-medium">Scope:</p>
+                    <ul class="list-disc list-inside space-y-1 text-xs pl-4">
+                        <li>New consumer unit, all new cabling, basic fittings, earthing/bonding, making good, certification.</li>
+                    </ul>
+                    <p class="text-sm font-medium mt-2">Cost Breakdown (Est. Stafford, May 2025):</p>
+                    <ul class="list-disc list-inside space-y-1 text-xs pl-4">
+                        <li>Materials: £950 - £1,700 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Labour (2 electricians, 5-8 days): £2,800 - £6,400 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Plastering (making good): £190 - £520 <span class="cost-source">(Gemini Estimate)</span></li>
+                    </ul>
+                    <p class="text-sm mt-2"><strong>Total Estimated Cost for Full Electrical Rewire: £4,500 - £7,500 <span class="cost-source">(Gemini Estimate)</span></strong></p>
+                </div>
+            </section>
+
+            <section id="financial-upgrade-costs" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">💡 Financial Focus: Upgrade Costs (Stafford, May 2025 - Gemini Estimates)</h2>
+                 <p class="text-xs text-gray-500">All costs in this section are Gemini Estimates.</p>
+                 <div class="bg-orange-50 p-6 rounded-lg shadow mb-6">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">Upgrade Cost Summary Chart</h3>
+                    <div class="chart-container">
+                        <canvas id="upgradeCostsChart"></canvas>
+                    </div>
+                     <p class="text-center text-xs mt-2 text-gray-500">Chart data based on Gemini Estimates (net costs where grants applicable).</p>
+                </div>
+                <div class="bg-orange-50 p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">1. Solar PV Panel Installation</h3>
+                    <p class="text-sm mb-2">Typical 3.5-4kWp system for 3-bed end-terrace, assuming suitable south-facing roof.</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Components: 10-12 panels, inverter, mounting, meter, cabling, scaffolding.</li>
+                        <li><strong>Est. Supply & Installation (4kWp): £6,000 - £8,500 <span class="cost-source">(Gemini Estimate)</span></strong></li>
+                        <li>Optional Battery Storage (5kWh): Additional £3,500 - £5,000 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Grants: Boiler Upgrade Scheme does NOT cover PV. Local schemes rare. SEG for export.</li>
+                        <li>Considerations: Roof condition (D2 issues). Will improve EPC.</li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-6 rounded-lg shadow mt-4">
+                    <h3 class="text-xl font-semibold text-amber-600 mb-3">2. Air Source Heat Pump (ASHP) Installation</h3>
+                    <p class="text-sm mb-2">Replacing gas boiler in older property (EPC D, 81sqm, solid walls).</p>
+                    <ul class="list-disc list-inside space-y-1 text-sm">
+                        <li>Components: ASHP unit (7-11kW), hot water cylinder, potential radiator upgrades, pipework, electrics, controls.</li>
+                        <li><strong>Est. Supply & Installation (ASHP system, excl. major radiator upgrades): £9,000 - £15,000 <span class="cost-source">(Gemini Estimate)</span></strong></li>
+                        <li>Potential Radiator Upgrades (8-10 rads): £2,000 - £4,000 <span class="cost-source">(Gemini Estimate)</span></li>
+                        <li>Improving Insulation: Loft at 270mm is good. Solid walls are key heat loss area.</li>
+                        <li>Grants (Boiler Upgrade Scheme - BUS): Currently up to £7,500 (may change, eligibility applies).</li>
+                        <li><strong>Net Est. Cost (ASHP, with £7.5k BUS grant, minor rad tweaks): £1,500 - £7,500 <span class="cost-source">(Gemini Estimate)</span></strong></li>
+                        <li><strong>Net Est. Cost (ASHP, with BUS grant, incl. significant rad upgrades): £3,500 - £11,500 <span class="cost-source">(Gemini Estimate)</span></strong></li>
+                        <li>Considerations: Running costs (elec vs gas prices), space, noise (modern units quiet), system design critical.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="summary-actions" class="content-section space-y-6">
+                <h2 class="text-3xl font-semibold text-amber-700 border-b-2 border-amber-200 pb-2">📝 Summary & Actions</h2>
+                <div class="bg-orange-50 p-6 rounded-lg shadow">
+                    <p class="text-sm leading-relaxed mb-3">11 Russell Street is an older property requiring significant investment. Primary concerns: external render, roof structure/coverings (inc. timber defects), dated electrical system, outbuilding structural state, and damp.</p>
+                    <h4 class="text-md font-semibold text-amber-600 mt-4 mb-2">Immediate Next Steps Before Purchase:</h4>
+                    <ol class="list-decimal list-inside space-y-1 text-sm">
+                        <li><strong>Obtain Specialist Quotes:</strong> For all CR3 and significant CR2 items, especially: External render, full roofing assessment & repairs, electrical EICR & likely rewire, structural engineer for outbuilding, damp specialist investigation.</li>
+                        <li><strong>Legal Enquiries:</strong> Address all points in Section H of the survey report with your solicitor.</li>
+                        <li><strong>Budget Realistically:</strong> Factor in all repair costs, plus a 20-30% contingency.</li>
+                        <li><strong>Consider Long-Term Upgrades:</strong> If proceeding, plan for energy efficiency improvements (solar/ASHP) and general modernisation (kitchen, bathroom, decoration, flooring).</li>
+                    </ol>
+                    <p class="text-sm leading-relaxed mt-3">This property has potential but requires a purchaser with the financial capacity and willingness for substantial renovation.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+    const navLinks = document.querySelectorAll('.nav-link');
+    const navSubmenuParents = document.querySelectorAll('.nav-link-parent');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    const imageData = {
+        "Page23BBox_62.8_216.25_499.35_229.19000000000005": "https://drive.google.com/file/d/1muIAHpPFtnT_QeL9FNThZFFmny2E0rV2/view?usp=drive_link",
+        "Page24BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/146strP8iwYuf60InRG7LqVj4CrdLRGMI/view?usp=drive_link",
+        "Page24BBox_213.95_216.25_348.15_229.19000000000005": "https://drive.google.com/file/d/1a4hIy4IlDgrGZIj7O8vYaZCa0HFUsvTg/view?usp=drive_link",
+        "Page24BBox_365.15_216.25_499.35_229.19000000000005": "https://drive.google.com/file/d/1DquawqfFta4PB3-HVmUXJCjOWPCxc7nq/view?usp=drive_link",
+        "Page24BBox_62.8_374.79_196.95_387.74": "https://drive.google.com/file/d/1-2fxC5Z_QD8ENr6jhuvDBsOQW13_aGxE/view?usp=drive_link",
+        "Page24BBox_213.95_374.79_348.15_387.74": "https://drive.google.com/file/d/1geckURyU8ui5yVB9vMIVgj3yf5P3Lkpx/view?usp=drive_link",
+        "Page24BBox_365.15_374.79_499.35_387.74": "https://drive.google.com/file/d/1U33cJCjYH4LAXLmSAWUFhK5_2fdwEa-E/view?usp=drive_link",
+        "Page24BBox_62.8_533.33_196.95_546.28": "https://drive.google.com/file/d/1leiw1ce3EgOmn3kmJZ2FH0pSv7d7lZlE/view?usp=drive_link",
+        "Page24BBox_213.95_533.33_348.15_546.28": "https://drive.google.com/file/d/1EyP5TI8cdiYmS1K8dMe0QMXO6_7CcU5D/view?usp=drive_link",
+        "Page25BBox_62.8_422.73_196.95_435.68": "https://drive.google.com/file/d/14qGy_c_FIPo1b1fLzdOA3YWde3lmZkc8/view?usp=drive_link",
+        "Page25BBox_213.95_422.73_348.15_435.68": "https://drive.google.com/file/d/1Lcz9-J8EWv5LipeGFSBRn02IyJdsUSy-/view?usp=drive_link",
+        "Page25BBox_365.15_458.18_499.35_471.13": "https://drive.google.com/file/d/12hfx4OUMmDHdsG6Cky8zDYoy-d5Y3Jvb/view?usp=drive_link",
+        "Page25BBox_62.8_616.73_196.95_629.67": "https://drive.google.com/file/d/1N0CSSCE7DJfydlYVidOTdkglaJHuuQaM/view?usp=drive_link",
+        "Page25BBox_213.95_652.18_348.15_665.12": "https://drive.google.com/file/d/1uh5Di-5NTxQ85oaRTPvKI4tRG9aVzYal/view?usp=drive_link",
+        "Page25BBox_365.15_616.73_499.35_629.67": "https://drive.google.com/file/d/1RdjFfJ4JYfi0jrBKHZ-V2kobnGcFiuGg/view?usp=drive_link",
+        "Page26BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/1oTdwtqOA6babu_PbEgNDjImy1xMbxbku/view?usp=drive_link",
+        "Page29BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/1xy0MEDrc_B75Aw_iCEx943mD5qpfPg0z/view?usp=drive_link",
+        "Page30BBox_62.8_251.7_196.95_264.64": "https://drive.google.com/file/d/1sNUPvQvlFDsxP_TPZx2KXFXw3ssXyMAR/view?usp=drive_link",
+        "Page31BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/1v0iDmMaeuiYk9MnI1WPUoLEjBik-grbs/view?usp=drive_link",
+        "Page32BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/1qoSw8lMUQAYQ-hLqY0oOLmJPWWuvyKyu/view?usp=drive_link",
+        "Page33BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/1r_xOHvyGwHbHNe9dJRR1Q_XEEHd6Srep/view?usp=drive_link",
+        "Page34BBox_62.8_330.24_272.55_343.18": "https://drive.google.com/file/d/13oWwXewUdimd3CVwgd8b0tSPenDi2nKk/view?usp=drive_link",
+        "Page34BBox_289.55_330.24_499.35_343.18": "https://drive.google.com/file/d/1I2_CU-7DUhhP4fRHdMfXLZ42RWMezFYu/view?usp=drive_link",
+        "Page35BBox_62.8_251.7_272.55_264.64": "https://drive.google.com/file/d/1qoCPgIlPYB688jbx0FEqRLgBaPFfZA5G/view?usp=drive_link",
+        "Page39BBox_62.8_492.23_196.95_505.17": "https://drive.google.com/file/d/1Kb3h5eb5s7399pFlZ0k1gaj17jdpUhgW/view?usp=drive_link",
+        "Page40BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/1M12SZDaHkwt9uQXUBbXHU2KvvmKNH_PX/view?usp=drive_link",
+        "Page43BBox_62.8_251.7_196.95_264.64": "https://drive.google.com/file/d/1GyoUcWwaVpbcAxb9-mIqILk3Gcg15PAg/view?usp=drive_link",
+        "Page48BBox_62.8_365.24_196.95_378.18": "https://drive.google.com/file/d/1c5Pi_-hftQW5PMucynkrxCeJHqzMYtlO/view?usp=drive_link",
+        "Page49BBox_62.8_611.73_272.55_624.67": "https://drive.google.com/file/d/1oRFBAugEGSIBKVNRgC1UR-oo2SVZpDiZ/view?usp=drive_link",
+        "Page50BBox_62.8_673.62_196.95_686.56": "https://drive.google.com/file/d/1Fy6lLweuXJ8fpmxS0iU1xJ-QVRcrkO2l/view?usp=drive_link",
+        "Page52BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/1ujNgnO0h7Q-g10qW2xBbDjH2t6Cxep01/view?usp=drive_link",
+        "Page54BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/15Deyi5-v4Vgs7KlGovg5TrVLhcogbUoq/view?usp=drive_link",
+        "Page55BBox_62.8_359.69_196.95_372.63": "https://drive.google.com/file/d/187QCEGTKGsti7hXE9EndOuuNs9XVS_ES/view?usp=drive_link",
+        "Page58BBox_62.8_301.24_272.55_314.19000000000005": "https://drive.google.com/file/d/1Us2Xbt1OaNyE10hOmD57i-H9TW7DefQr/view?usp=drive_link",
+        "Page59BBox_62.8_405.73_499.35_418.68": "https://drive.google.com/file/d/1gL-QgaZV3PySkRJO5dh36MUqReRoZQQ-/view?usp=drive_link",
+        "Page60BBox_62.8_456.43_499.35_469.38": "https://drive.google.com/file/d/1GMDMyUUD91kRywyzEhXK4jsSVJ0VZa-V/view?usp=drive_link",
+        "Page61BBox_62.8_578.37_196.95_591.3199999999999": "https://drive.google.com/file/d/1-uxrY-bzJFExXu8d6ekh7z-4BzJpBbcq/view?usp=drive_link",
+        "Page65BBox_62.8_216.25_196.95_229.19000000000005": "https://drive.google.com/file/d/1b0EMcQkUmXvv1LMTscPOJvnIQjYxo00D/view?usp=drive_link",
+        "Page66BBox_213.95_216.25_348.15_229.19000000000005": "https://drive.google.com/file/d/1q902hkga-r9hUbLstEjuDsKN_Xingas0/view?usp=drive_link"
+    };
+
+    const defectImageGroupings = {
+        "D1": ["Page23BBox_62.8_216.25_499.35_229.19000000000005"],
+        "D2": [ 
+            "Page24BBox_62.8_216.25_196.95_229.19000000000005", "Page24BBox_213.95_216.25_348.15_229.19000000000005", 
+            "Page24BBox_365.15_216.25_499.35_229.19000000000005", "Page24BBox_62.8_374.79_196.95_387.74",
+            "Page24BBox_213.95_374.79_348.15_387.74", "Page24BBox_365.15_374.79_499.35_387.74",
+            "Page24BBox_62.8_533.33_196.95_546.28", "Page24BBox_213.95_533.33_348.15_546.28"
+        ],
+        "D3": [
+            "Page25BBox_62.8_422.73_196.95_435.68", "Page25BBox_213.95_422.73_348.15_435.68",
+            "Page25BBox_365.15_458.18_499.35_471.13", "Page25BBox_62.8_616.73_196.95_629.67",
+            "Page25BBox_213.95_652.18_348.15_665.12", "Page25BBox_365.15_616.73_499.35_629.67",
+            "Page26BBox_62.8_216.25_196.95_229.19000000000005"
+        ],
+        "D4": [
+            "Page29BBox_62.8_216.25_196.95_229.19000000000005", 
+            "Page30BBox_62.8_251.7_196.95_264.64", 
+            "Page31BBox_62.8_216.25_196.95_229.19000000000005", 
+            "Page32BBox_62.8_216.25_196.95_229.19000000000005"
+        ],
+        "D5": [
+            "Page33BBox_62.8_216.25_196.95_229.19000000000005"
+        ],
+        "D6": ["Page34BBox_62.8_330.24_272.55_343.18", "Page34BBox_289.55_330.24_499.35_343.18"],
+        "D8": ["Page35BBox_62.8_251.7_272.55_264.64"],
+        "E1": ["Page39BBox_62.8_492.23_196.95_505.17"], 
+        "E2": ["Page40BBox_62.8_216.25_196.95_229.19000000000005"], 
+        "E3": ["Page43BBox_62.8_251.7_196.95_264.64"], 
+        "E4": ["Page48BBox_62.8_365.24_196.95_378.18"], 
+        "E5": ["Page49BBox_62.8_611.73_272.55_624.67"],
+        "E6": ["Page50BBox_62.8_673.62_196.95_686.56"], 
+        "E7": ["Page52BBox_62.8_216.25_196.95_229.19000000000005"], 
+        "E8": ["Page54BBox_62.8_216.25_196.95_229.19000000000005"], 
+        "E9": ["Page55BBox_62.8_359.69_196.95_372.63"],
+        "F1": ["Page58BBox_62.8_301.24_272.55_314.19000000000005"],
+        "F2": ["Page59BBox_62.8_405.73_499.35_418.68"],
+        "F4": ["Page60BBox_62.8_456.43_499.35_469.38"],
+        "F6": ["Page61BBox_62.8_578.37_196.95_591.3199999999999"],
+        "G2": ["Page65BBox_62.8_216.25_196.95_229.19000000000005"],
+        "G3": ["Page66BBox_213.95_216.25_348.15_229.19000000000005"]
+    };
+    
+    function populateDefectImages() {
+        for (const defectId in defectImageGroupings) {
+            const imageKeys = defectImageGroupings[defectId];
+            const defectCard = document.getElementById(defectId);
+            if (defectCard && imageKeys && imageKeys.length > 0) {
+                let imageGalleryDiv = defectCard.querySelector('.image-gallery');
+                if (imageGalleryDiv) {
+                    imageGalleryDiv.innerHTML = ''; 
+                    imageKeys.forEach((imageKey, index) => {
+                        const gDriveViewUrl = imageData[imageKey];
+                        if (gDriveViewUrl) {
+                            const linkElement = document.createElement('a');
+                            linkElement.href = gDriveViewUrl;
+                            linkElement.target = '_blank';
+                            linkElement.className = 'text-teal-600 hover:text-teal-800 hover:underline text-xs block py-1';
+                            
+                            const pagePart = imageKey.split('BBox')[0];
+                            linkElement.textContent = `View Image ${index + 1} (${pagePart})`;
+                            
+                            imageGalleryDiv.appendChild(linkElement);
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    function setActiveSection(targetId) {
+        contentSections.forEach(section => {
+            section.classList.remove('active');
+            if (section.id === targetId) {
+                section.classList.add('active');
+            }
+        });
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.target === targetId) {
+                link.classList.add('active');
+            }
+        });
+        document.querySelector('main').scrollTop = 0;
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            setActiveSection(link.dataset.target);
+        });
+    });
+
+    navSubmenuParents.forEach(parent => {
+        parent.addEventListener('click', (e) => {
+            if (e.target === parent || e.target.classList.contains('arrow') || parent.contains(e.target.querySelector('.arrow'))) {
+                 const submenu = parent.nextElementSibling;
+                 const arrow = parent.querySelector('.arrow');
+                 if (submenu.classList.contains('hidden')) {
+                    submenu.classList.remove('hidden');
+                    arrow.classList.add('rotate-90');
+                 } else {
+                    submenu.classList.add('hidden');
+                    arrow.classList.remove('rotate-90');
+                 }
+            }
+        });
+    });
+    
+    setActiveSection('overview');
+    populateDefectImages();
+
+    const repairCostsCtx = document.getElementById('repairCostsChart')?.getContext('2d');
+    if (repairCostsCtx) {
+        const repairData = {
+            labels: ['Roofing (Priority)', 'External Render (1 elev.)', 'Electrical Rewire', 'Outbuilding (Assess & Demo)', 'Damp (Survey & 1 Wall)', 'Windows (3-4 units)', 'Safety Items'],
+            datasets: [{
+                label: 'Estimated Mid-Point Repair Cost (£)',
+                data: [4250, 4500, 6000, 1850, 1100, 525, 715],
+                backgroundColor: ['rgba(217, 119, 6, 0.7)','rgba(239, 68, 68, 0.7)','rgba(245, 158, 11, 0.7)','rgba(101, 163, 13, 0.7)','rgba(59, 130, 246, 0.7)','rgba(139, 92, 246, 0.7)','rgba(20, 184, 166, 0.7)'],
+                borderColor: ['rgba(217, 119, 6, 1)','rgba(239, 68, 68, 1)','rgba(245, 158, 11, 1)','rgba(101, 163, 13, 1)','rgba(59, 130, 246, 1)','rgba(139, 92, 246, 1)','rgba(20, 184, 166, 1)'],
+                borderWidth: 1
+            }]
+        };
+        new Chart(repairCostsCtx, {
+            type: 'bar', data: repairData, options: { responsive: true, maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Cost (£)' } },
+                          x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 30,
+                             callback: function(value) { const label = this.getLabelForValue(value); return label.length > 16 ? label.substring(0, 16) + '...' : label; } } } },
+                plugins: { legend: { display: false }, title: { display: true, text: 'Key Repair Cost Areas (Gemini Estimates - Mid-Points)' },
+                    tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; }
+                                if (context.parsed.y !== null) { label += new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(context.parsed.y); }
+                                const fullXLabel = repairData.labels[context.dataIndex]; return [label, `Category: ${fullXLabel} (Gemini Estimate)`]; } } } } }
+        });
+    }
+
+    const surveyorCostsCtx = document.getElementById('surveyorCostsChart')?.getContext('2d');
+    if (surveyorCostsCtx) {
+        const surveyorData = {
+            labels: ['Verge Mortar', 'Scaffold (Roof)', 'Render Removal', 'Misted Window (each)', 'Roofer Inspect', 'Felt Repair', 'Party Wall (Loft)', 'Pest Control (Loft)', 'Damp Survey', 'Kitchen Extractor', 'Bathroom Extractor', 'EICR', 'Gas Cert', 'Smoke/CO (each)'],
+            datasets: [{
+                label: 'Surveyor Budget Cost (£)',
+                data: [800, 500, 4000, 600, 300, 600, 1500, 200, 400, 300, 300, 250, 150, 200],
+                backgroundColor: 'rgba(20, 184, 166, 0.7)', // teal-500
+                borderColor: 'rgba(20, 184, 166, 1)',
+                borderWidth: 1
+            }]
+        };
+         new Chart(surveyorCostsCtx, {
+            type: 'bar', data: surveyorData, options: { responsive: true, maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Cost (£)' } },
+                          x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 30,
+                             callback: function(value) { const label = this.getLabelForValue(value); return label.length > 16 ? label.substring(0, 16) + '...' : label; } } } },
+                plugins: { legend: { display: false }, title: { display: true, text: 'Surveyor Quoted Budget Costs (from PDF)' },
+                    tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; }
+                                if (context.parsed.y !== null) { label += new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(context.parsed.y); }
+                                const fullXLabel = surveyorData.labels[context.dataIndex]; return [label, `Item: ${fullXLabel} (Surveyor Estimate)`]; } } } } }
+        });
+    }
+
+    const upgradeCostsCtx = document.getElementById('upgradeCostsChart')?.getContext('2d');
+    if (upgradeCostsCtx) {
+        const upgradeData = {
+            labels: ['Solar PV (4kWp)', 'ASHP (Net, Minor Rad)', 'ASHP (Net, Major Rad)'],
+            datasets: [{
+                label: 'Estimated Mid-Point Upgrade Cost (£)',
+                data: [
+                    (6000+8500)/2, // Solar PV
+                    (1500+7500)/2, // ASHP Net Minor Rad
+                    (3500+11500)/2 // ASHP Net Major Rad
+                ],
+                backgroundColor: ['rgba(139, 92, 246, 0.7)', 'rgba(234, 179, 8, 0.7)', 'rgba(217, 70, 239, 0.7)'], // violet, yellow, fuchsia
+                borderColor: ['rgba(139, 92, 246, 1)', 'rgba(234, 179, 8, 1)', 'rgba(217, 70, 239, 1)'],
+                borderWidth: 1
+            }]
+        };
+        new Chart(upgradeCostsCtx, {
+            type: 'bar', data: upgradeData, options: { responsive: true, maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'Cost (£)' } },
+                          x: { ticks: { autoSkip: false, maxRotation: 45, minRotation: 30,
+                             callback: function(value) { const label = this.getLabelForValue(value); return label.length > 20 ? label.substring(0, 20) + '...' : label; } } } },
+                plugins: { legend: { display: false }, title: { display: true, text: 'Key Upgrade Costs (Gemini Estimates - Mid-Points)' },
+                    tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; }
+                                if (context.parsed.y !== null) { label += new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(context.parsed.y); }
+                                const fullXLabel = upgradeData.labels[context.dataIndex]; return [label, `Upgrade: ${fullXLabel} (Gemini Estimate)`]; } } } } }
+        });
+    }
+
+</script>
+</body>
+</html>
