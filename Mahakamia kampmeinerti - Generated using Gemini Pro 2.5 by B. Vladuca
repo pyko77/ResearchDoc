@@ -51,7 +51,7 @@
         <header class="text-center mb-12">
             <h1 class="text-4xl md:text-6xl font-black text-[#ffa600] mb-2">The Long-Armed Weevil</h1>
             <h2 class="text-2xl md:text-4xl font-bold">An In-Depth Look at <em>Mahakamia kampmeinerti</em></h2>
-            <p class="text-lg text-gray-300 mt-4 max-w-3xl mx-auto">A synthesis of over a century of data, from its discovery in the rainforests of Borneo to its place in the modern collector's market.</p>
+            <p class="text-lg text-gray-300 mt-4 max-w-3xl mx-auto">A synthesis of over a century of data, from its discovery in the rainforests of Borneo to its place in the modern collector's market - Generated using Gemini Pro 2.5 by B. Vladuca.</p>
         </header>
 
         <main class="space-y-12">
