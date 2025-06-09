@@ -1,935 +1,468 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mahakamia kampmeinerti: An Interactive Infographic</title>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-    <style>
-
-        body {
-
-            font-family: 'Inter', sans-serif;
-
-        }
-
-        .chart-container {
-
-            position: relative;
-
-            width: 100%;
-
-            margin-left: auto;
-
-            margin-right: auto;
-
-            max-height: 400px;
-
-        }
-
-        .swot-card {
-
-             background-color: rgba(255, 255, 255, 0.1);
-
-             border-radius: 0.5rem;
-
-             padding: 1rem;
-
-             border: 1px solid rgba(255, 255, 255, 0.2);
-
-        }
-
-        #geminiModal.hidden {
-
-            display: none;
-
-        }
-
-        .loader {
-
-            border: 4px solid rgba(255, 255, 255, 0.3);
-
-            border-left-color: #ffa600;
-
-            border-radius: 50%;
-
-            width: 40px;
-
-            height: 40px;
-
-            animation: spin 1s linear infinite;
-
-        }
-
-        @keyframes spin {
-
-            to {
-
-                transform: rotate(360deg);
-
-            }
-
-        }
-
-    </style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahakamia kampmeinerti: An Interactive Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            max-height: 400px;
+        }
+        .swot-card {
+             background-color: rgba(255, 255, 255, 0.1);
+             border-radius: 0.5rem;
+             padding: 1rem;
+             border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        #geminiModal.hidden {
+            display: none;
+        }
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-left-color: #ffa600;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
-
 <body class="bg-[#003f5c] text-white">
 
-
-
-    <div class="container mx-auto p-4 md:p-8">
-
-
-
-        <header class="text-center mb-12">
-
-            <h1 class="text-4xl md:text-6xl font-black text-[#ffa600] mb-2">The Long-Armed Weevil</h1>
-
-            <h2 class="text-2xl md:text-4xl font-bold">An In-Depth Look at <em>Mahakamia kampmeinerti</em></h2>
-
-            <p class="text-lg text-gray-300 mt-4 max-w-3xl mx-auto">A synthesis of over a century of data, from its discovery in the rainforests of Borneo to its place in the modern collector's market - Generated using Gemini Pro 2.5 by B. Vladuca.</p>
-
-        </header>
-
-
-
-        <main class="space-y-12">
-
-            
-
-            <section id="discovery" class="bg-white/10 p-6 rounded-2xl shadow-lg">
-
-                <h3 class="text-3xl font-bold text-center mb-6 text-[#ff7c43]">A Century of Discovery</h3>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
-
-                    <div class="flex flex-col items-center">
-
-                        <div class="text-5xl font-bold text-[#ffa600]">1912</div>
-
-                        <p class="mt-2 text-lg">A single male specimen is presented to the Leyden Museum by Mr. Kampmeinert.</p>
-
-                    </div>
-
-                    <div class="text-5xl font-extrabold text-white hidden md:block">&rarr;</div>
-
-                    <div class="text-5xl font-extrabold text-white block md:hidden">&darr;</div>
-
-                    <div class="flex flex-col items-center">
-
-                        <div class="text-5xl font-bold text-[#ffa600]">1913</div>
-
-                        <p class="mt-2 text-lg">Coenraad Ritsema formally describes the new genus *Mahakamia* and species *kampmeinerti*.</p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <section id="taxonomy-morphology" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-                <div class="bg-white/10 p-6 rounded-2xl shadow-lg flex flex-col">
-
-                    <h3 class="text-3xl font-bold mb-4 text-[#ff7c43]">Taxonomic Profile</h3>
-
-                    <p class="text-gray-300 mb-4">Positioned within the Dryophthorinae subfamily, a group known for its robust and often large members, *M. kampmeinerti* is a classic example of a "true weevil."</p>
-
-                    <ul class="space-y-2 text-lg flex-grow">
-
-                        <li><strong>Kingdom:</strong> Animalia</li>
-
-                        <li><strong>Phylum:</strong> Arthropoda</li>
-
-                        <li><strong>Class:</strong> Insecta</li>
-
-                        <li><strong>Order:</strong> Coleoptera (Beetles)</li>
-
-                        <li><strong>Family:</strong> Dryophthoridae</li>
-
-                        <li><strong>Genus:</strong> <em>Mahakamia</em></li>
-
-                        <li><strong>Species:</strong> <em>M. kampmeinerti</em></li>
-
-                    </ul>
-
-                </div>
-
-
-
-                <div class="bg-white/10 p-6 rounded-2xl shadow-lg">
-
-                    <h3 class="text-3xl font-bold mb-4 text-[#ff7c43]">Morphology at a Glance</h3>
-
-                    <div class="space-y-4">
-
-                        <div class="bg-white/10 p-4 rounded-lg">
-
-                            <h4 class="text-xl font-bold text-[#ffa600]">Impressive Size</h4>
-
-                            <p class="text-gray-200">Reaching a body length of up to <span class="text-3xl font-extrabold">69mm</span>, it is one of the larger species in its family.</p>
-
-                        </div>
-
-                        <div class="bg-white/10 p-4 rounded-lg">
-
-                            <h4 class="text-xl font-bold text-[#ffa600]">The "Long Arms"</h4>
-
-                            <p class="text-gray-200">Its most distinctive feature is its elongated forelegs, a sexually dimorphic trait likely used by males in contests for mates.</p>
-
-                        </div>
-
-                        <div class="bg-white/10 p-4 rounded-lg">
-
-                            <h4 class="text-xl font-bold text-[#ffa600]">Vivid Coloration</h4>
-
-                            <p class="text-gray-200">Described as having striking patterns and colors, though specific details are sparse in scientific literature.</p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-            
-
-            <section id="distribution" class="bg-white/10 p-6 rounded-2xl shadow-lg">
-
-                <h3 class="text-3xl font-bold text-center mb-6 text-[#ff7c43]">Geographical Distribution</h3>
-
-                <p class="text-center text-gray-300 max-w-2xl mx-auto mb-8">Confirmed sightings are concentrated in the biodiverse rainforests of Southeast Asia, indicating a dependence on intact forest ecosystems.</p>
-
-                <div class="flex flex-wrap justify-center gap-6">
-
-                    <div class="bg-[#2f4b7c] p-4 rounded-lg text-center w-64">
-
-                        <span class="text-4xl">ID</span>
-
-                        <h4 class="text-xl font-bold mt-2">Indonesia</h4>
-
-                        <p class="text-gray-300">Borneo, including the type locality in the Upper Mahakam River Basin.</p>
-
-                    </div>
-
-                    <div class="bg-[#2f4b7c] p-4 rounded-lg text-center w-64">
-
-                        <span class="text-4xl">MY</span>
-
-                        <h4 class="text-xl font-bold mt-2">Malaysia</h4>
-
-                        <p class="text-gray-300">Peninsular Malaysia, specifically records from the Tapah Hills.</p>
-
-                    </div>
-
-                    <div class="bg-[#665191] p-4 rounded-lg text-center w-64">
-
-                         <span class="text-4xl">KM</span>
-
-                        <h4 class="text-xl font-bold mt-2">Comoros</h4>
-
-                        <p class="text-gray-300">A historical record exists, but this is geographically isolated and requires verification.</p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-            
-
-            <section id="market-conservation" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-                <div class="bg-white/10 p-6 rounded-2xl shadow-lg flex flex-col">
-
-                    <h3 class="text-3xl font-bold mb-4 text-[#ff7c43]">A Collector's Prize</h3>
-
-                     <p class="text-gray-300 mb-4">The species' impressive size and appearance have made it a desirable item in the entomological trade. This chart compares observed prices from online specimen dealers.</p>
-
-                    <div class="chart-container h-72">
-
-                        <canvas id="priceComparisonChart"></canvas>
-
-                    </div>
-
-                     <button id="generateStoryBtn" class="mt-4 w-full bg-[#ffa600] hover:bg-[#ff7c43] text-white font-bold py-2 px-4 rounded-lg transition-colors">✨ Create Specimen Story</button>
-
-                </div>
-
-                <div class="bg-white/10 p-6 rounded-2xl shadow-lg">
-
-                    <h3 class="text-3xl font-bold mb-4 text-[#ff7c43]">Conservation Profile</h3>
-
-                    <p class="text-gray-300 mb-4">While officially "Not Evaluated" by the IUCN, its reliance on specific forest habitats makes it vulnerable. This profile analyzes its conservation standing.</p>
-
-                     <div class="chart-container h-80">
-
-                        <canvas id="conservationSwotChart"></canvas>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <section id="ecology" class="bg-white/10 p-6 rounded-2xl shadow-lg">
-
-                <h3 class="text-3xl font-bold text-center mb-6 text-[#ff7c43]">Inferred Ecology & Life Cycle</h3>
-
-                <p class="text-center text-gray-300 max-w-3xl mx-auto mb-8">While direct observation is limited, the biology of its relatives in the Dryophthorinae subfamily allows for strong inferences about its life cycle and ecological role.</p>
-
-                
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-
-                    <div>
-
-                        <h4 class="text-2xl font-semibold mb-4 text-center text-[#ffa600]">Life Cycle Flow</h4>
-
-                        <div class="relative pl-8">
-
-                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-500"></div>
-
-                            <div class="mb-8 relative">
-
-                                <div class="absolute -left-[2.1rem] top-1.5 w-8 h-8 bg-[#f95d6a] rounded-full flex items-center justify-center font-bold">1</div>
-
-                                <h5 class="text-xl font-bold">Egg</h5>
-
-                                <p class="text-gray-300">Female uses her rostrum to bore into a host plant, likely a decaying monocot, and lays eggs inside.</p>
-
-                            </div>
-
-                            <div class="mb-8 relative">
-
-                                <div class="absolute -left-[2.1rem] top-1.5 w-8 h-8 bg-[#d45087] rounded-full flex items-center justify-center font-bold">2</div>
-
-                                <h5 class="text-xl font-bold">Larva (Grub)</h5>
-
-                                <p class="text-gray-300">Legless, C-shaped larvae hatch and feed on the internal tissues of the host, contributing to decomposition.</p>
-
-                            </div>
-
-                            <div class="mb-8 relative">
-
-                                 <div class="absolute -left-[2.1rem] top-1.5 w-8 h-8 bg-[#a05195] rounded-full flex items-center justify-center font-bold">3</div>
-
-                                <h5 class="text-xl font-bold">Pupa</h5>
-
-                                <p class="text-gray-300">After growing, the larva pupates within a chamber inside the host plant, undergoing metamorphosis.</p>
-
-                            </div>
-
-                             <div class="relative">
-
-                                 <div class="absolute -left-[2.1rem] top-1.5 w-8 h-8 bg-[#665191] rounded-full flex items-center justify-center font-bold">4</div>
-
-                                <h5 class="text-xl font-bold">Adult</h5>
-
-                                <p class="text-gray-300">The adult beetle emerges to feed, reproduce, and restart the cycle.</p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div>
-
-                        <h4 class="text-2xl font-semibold mb-4 text-center text-[#ffa600]">Ecological Role</h4>
-
-                        <div class="space-y-4">
-
-                            <div class="swot-card">
-
-                                <h5 class="text-xl font-bold flex items-center"><span class="text-2xl mr-3">🌴</span>Host Plant Specialist</h5>
-
-                                <p class="text-gray-300 mt-1">Strongly associated with large monocotyledonous plants like palms or bamboo, crucial for larval development.</p>
-
-                            </div>
-
-                             <div class="swot-card">
-
-                                <h5 class="text-xl font-bold flex items-center"><span class="text-2xl mr-3">♻️</span>Nutrient Cycler</h5>
-
-                                <p class="text-gray-300 mt-1">By breaking down decaying plant matter, it plays a vital role in returning nutrients to the forest floor.</p>
-
-                            </div>
-
-                             <div class="swot-card flex flex-col">
-
-                                <h5 class="text-xl font-bold flex items-center"><span class="text-2xl mr-3">❓</span>Knowledge Gaps</h5>
-
-                                <p class="text-gray-300 mt-1 flex-grow">Specific host plants, natural predators, and population dynamics remain major areas for future research.</p>
-
-                                <button id="generateHypothesisBtn" class="mt-3 w-full bg-[#ffa600] hover:bg-[#ff7c43] text-white font-bold py-2 px-4 rounded-lg transition-colors">✨ Generate Ecological Hypothesis</button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </main>
-
-
-
-        <footer class="text-center mt-16 pt-8 border-t border-white/20">
-
-            <p class="text-gray-400">Infographic created with Chart.js and powered by the Gemini API.</p>
-
-        </footer>
-
-    </div>
-
-    
-
-    <div id="geminiModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-
-        <div class="bg-[#2f4b7c] rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
-
-            <div class="p-4 border-b border-white/20 flex justify-between items-center">
-
-                <h3 id="modalTitle" class="text-2xl font-bold text-[#ffa600]"></h3>
-
-                <button id="closeModalBtn" class="text-white text-3xl hover:text-gray-300">&times;</button>
-
-            </div>
-
-            <div id="modalContent" class="p-6 overflow-y-auto">
-
-                <div class="flex flex-col items-center justify-center h-48">
-
-                    <div class="loader"></div>
-
-                    <p class="mt-4 text-lg">Generating insights...</p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <script>
-
-        document.addEventListener('DOMContentLoaded', () => {
-
-
-
-            const processLabel = (label) => {
-
-                const maxLength = 16;
-
-                if (label.length <= maxLength) {
-
-                    return label;
-
-                }
-
-                const words = label.split(' ');
-
-                const lines = [];
-
-                let currentLine = '';
-
-                for (const word of words) {
-
-                    if ((currentLine + ' ' + word).trim().length > maxLength) {
-
-                        lines.push(currentLine.trim());
-
-                        currentLine = word;
-
-                    } else {
-
-                        currentLine = (currentLine + ' ' + word).trim();
-
-                    }
-
-                }
-
-                if (currentLine) {
-
-                    lines.push(currentLine.trim());
-
-                }
-
-                return lines;
-
-            };
-
-
-
-            const tooltipTitleCallback = (tooltipItems) => {
-
-                const item = tooltipItems[0];
-
-                let label = item.chart.data.labels[item.dataIndex];
-
-                if (Array.isArray(label)) {
-
-                    return label.join(' ');
-
-                } else {
-
-                    return label;
-
-                }
-
-            };
-
-            
-
-            const brilliantBluesPalette = {
-
-                primary: '#ffa600',
-
-                secondary: '#ff7c43',
-
-                accent1: '#f95d6a',
-
-                accent2: '#d45087',
-
-                accent3: '#a05195',
-
-                accent4: '#665191',
-
-                accent5: '#2f4b7c',
-
-                base: '#003f5c',
-
-                text: '#FFFFFF',
-
-                grid: 'rgba(255, 255, 255, 0.2)'
-
-            };
-
-
-
-            const chartOptions = {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-
-                        labels: {
-
-                            color: brilliantBluesPalette.text,
-
-                            font: {
-
-                                size: 14
-
-                            }
-
-                        }
-
-                    },
-
-                    tooltip: {
-
-                        callbacks: {
-
-                            title: tooltipTitleCallback
-
-                        }
-
-                    }
-
-                },
-
-                scales: {
-
-                    y: {
-
-                        beginAtZero: true,
-
-                        grid: {
-
-                            color: brilliantBluesPalette.grid
-
-                        },
-
-                        ticks: {
-
-                            color: brilliantBluesPalette.text
-
-                        }
-
-                    },
-
-                    x: {
-
-                        grid: {
-
-                            color: brilliantBluesPalette.grid
-
-                        },
-
-                        ticks: {
-
-                            color: brilliantBluesPalette.text
-
-                        }
-
-                    }
-
-                }
-
-            };
-
-
-
-            const priceCtx = document.getElementById('priceComparisonChart').getContext('2d');
-
-            new Chart(priceCtx, {
-
-                type: 'bar',
-
-                data: {
-
-                    labels: ['eBay Listing', 'NaturShowroom (Papered)', 'NaturShowroom (Spread)'],
-
-                    datasets: [{
-
-                        label: 'Price (USD)',
-
-                        data: [39.90, 49.00, 68.00],
-
-                        backgroundColor: [brilliantBluesPalette.accent1, brilliantBluesPalette.accent2, brilliantBluesPalette.accent3],
-
-                        borderColor: [brilliantBluesPalette.accent1, brilliantBluesPalette.accent2, brilliantBluesPalette.accent3],
-
-                        borderWidth: 1
-
-                    }]
-
-                },
-
-                options: {
-
-                    ...chartOptions,
-
-                    scales: {
-
-                         y: {
-
-                            beginAtZero: true,
-
-                             grid: { color: brilliantBluesPalette.grid },
-
-                             ticks: { color: brilliantBluesPalette.text, callback: function(value) { return '$' + value; } }
-
-                        },
-
-                        x: {
-
-                            grid: { display: false },
-
-                            ticks: { color: brilliantBluesPalette.text }
-
-                        }
-
-                    }
-
-                }
-
-            });
-
-
-
-            const conservationCtx = document.getElementById('conservationSwotChart').getContext('2d');
-
-            new Chart(conservationCtx, {
-
-                type: 'radar',
-
-                data: {
-
-                    labels: [
-
-                        'Ecological Significance', 
-
-                        'Data Availability',
-
-                        'Public Appeal (Flagship Potential)', 
-
-                        'Habitat Security', 
-
-                        'Collection Pressure'
-
-                    ],
-
-                    datasets: [{
-
-                        label: 'Conservation Profile Score (1-5)',
-
-                        data: [4, 1, 4, 2, 3],
-
-                        backgroundColor: 'rgba(249, 93, 106, 0.4)',
-
-                        borderColor: brilliantBluesPalette.accent1,
-
-                        pointBackgroundColor: brilliantBluesPalette.accent1,
-
-                        pointBorderColor: '#fff',
-
-                        pointHoverBackgroundColor: '#fff',
-
-                        pointHoverBorderColor: brilliantBluesPalette.accent1,
-
-                    }]
-
-                },
-
-                options: {
-
-                    ...chartOptions,
-
-                    scales: {
-
-                        r: {
-
-                            angleLines: { color: brilliantBluesPalette.grid },
-
-                            grid: { color: brilliantBluesPalette.grid },
-
-                            pointLabels: { 
-
-                                color: brilliantBluesPalette.text,
-
-                                font: {
-
-                                    size: 12
-
-                                } 
-
-                            },
-
-                            ticks: { 
-
-                                color: brilliantBluesPalette.text, 
-
-                                backdropColor: 'transparent',
-
-                                stepSize: 1
-
-                            },
-
-                            min: 0,
-
-                            max: 5
-
-                        }
-
-                    },
-
-                     plugins: {
-
-                        legend: {
-
-                            labels: {
-
-                                color: brilliantBluesPalette.text
-
-                            }
-
-                        },
-
-                        tooltip: {
-
-                            callbacks: {
-
-                                title: tooltipTitleCallback
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            });
-
-            
-
-            const modal = document.getElementById('geminiModal');
-
-            const modalTitle = document.getElementById('modalTitle');
-
-            const modalContent = document.getElementById('modalContent');
-
-            const closeModalBtn = document.getElementById('closeModalBtn');
-
-            const generateHypothesisBtn = document.getElementById('generateHypothesisBtn');
-
-            const generateStoryBtn = document.getElementById('generateStoryBtn');
-
-            
-
-            const loadingHTML = `<div class="flex flex-col items-center justify-center h-48"><div class="loader"></div><p class="mt-4 text-lg">Generating insights...</p></div>`;
-
-
-
-            const callGeminiAPI = async (prompt) => {
-
-                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-
-                const payload = { contents: chatHistory };
-
-                const apiKey = "";
-
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-
-
-                try {
-
-                    const response = await fetch(apiUrl, {
-
-                        method: 'POST',
-
-                        headers: { 'Content-Type': 'application/json' },
-
-                        body: JSON.stringify(payload)
-
-                    });
-
-                    
-
-                    if (!response.ok) {
-
-                        throw new Error(`API call failed with status: ${response.status}`);
-
-                    }
-
-
-
-                    const result = await response.json();
-
-                    
-
-                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
-
-                        const text = result.candidates[0].content.parts[0].text;
-
-                        return text.replace(/\n/g, '<br>');
-
-                    } else {
-
-                        return "No content was generated. The response structure might be unexpected.";
-
-                    }
-
-                } catch (error) {
-
-                    console.error("Error calling Gemini API:", error);
-
-                    return `An error occurred while generating content: ${error.message}. Please check the console for details.`;
-
-                }
-
-            };
-
-
-
-            const openModal = (title, prompt) => {
-
-                modalTitle.textContent = title;
-
-                modalContent.innerHTML = loadingHTML;
-
-                modal.classList.remove('hidden');
-
-
-
-                callGeminiAPI(prompt).then(generatedText => {
-
-                    modalContent.innerHTML = `<p>${generatedText}</p>`;
-
-                });
-
-            };
-
-
-
-            generateHypothesisBtn.addEventListener('click', () => {
-
-                const prompt = "You are a creative biologist. Based on the following information about the weevil Mahakamia kampmeinerti (Family: Dryophthoridae, found in Southeast Asian rainforests, has long forelimbs, larvae likely develop in monocots like palms), generate a plausible and detailed scientific hypothesis about its specific mating rituals. Consider the function of the long 'arms' in your hypothesis.";
-
-                openModal("✨ Ecological Hypothesis", prompt);
-
-            });
-
-            
-
-            generateStoryBtn.addEventListener('click', () => {
-
-                const prompt = "You are an insect collector specializing in rare Coleoptera for the international market. Write a short, exciting narrative (2-3 paragraphs) about the challenges and thrill of acquiring a perfect, A+ grade specimen of the giant long-armed weevil, Mahakamia kampmeinerti, from the deep rainforests of Malaysia's Tapah Hills.";
-
-                openModal("✨ A Collector's Tale", prompt);
-
-            });
-
-
-
-            closeModalBtn.addEventListener('click', () => {
-
-                modal.classList.add('hidden');
-
-            });
-
-            
-
-            modal.addEventListener('click', (e) => {
-
-                if(e.target === modal) {
-
-                    modal.classList.add('hidden');
-
-                }
-
-            });
-
-        });
-
-    </script>
-
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-[#ffa600] mb-2">The Long-Armed Weevil</h1>
+            <h2 class="text-2xl md:text-4xl font-bold">An In-Depth Look at <em>Mahakamia kampmeinerti</em></h2>
+            <p class="text-lg text-gray-300 mt-4 max-w-3xl mx-auto">A synthesis of over a century of data, from its discovery in the rainforests of Borneo to its place in the modern collector's market - Generated using Gemini Pro 2.5 by B. Vladuca.</p>
+        </header>
+
+        <main class="space-y-12">
+            
+            <section id="discovery" class="bg-white/10 p-6 rounded-2xl shadow-lg">
+                <h3 class="text-3xl font-bold text-center mb-6 text-[#ff7c43]">A Century of Discovery</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
+                    <div class="flex flex-col items-center">
+                        <div class="text-5xl font-bold text-[#ffa600]">1912</div>
+                        <p class="mt-2 text-lg">A single male specimen is presented to the Leyden Museum by Mr. Kampmeinert.</p>
+                    </div>
+                    <div class="text-5xl font-extrabold text-white hidden md:block">&rarr;</div>
+                    <div class="text-5xl font-extrabold text-white block md:hidden">&darr;</div>
+                    <div class="flex flex-col items-center">
+                        <div class="text-5xl font-bold text-[#ffa600]">1913</div>
+                        <p class="mt-2 text-lg">Coenraad Ritsema formally describes the new genus *Mahakamia* and species *kampmeinerti*.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="taxonomy-morphology" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white/10 p-6 rounded-2xl shadow-lg flex flex-col">
+                    <h3 class="text-3xl font-bold mb-4 text-[#ff7c43]">Taxonomic Profile</h3>
+                    <p class="text-gray-300 mb-4">Positioned within the Dryophthorinae subfamily, a group known for its robust and often large members, *M. kampmeinerti* is a classic example of a "true weevil."</p>
+                    <ul class="space-y-2 text-lg flex-grow">
+                        <li><strong>Kingdom:</strong> Animalia</li>
+                        <li><strong>Phylum:</strong> Arthropoda</li>
+                        <li><strong>Class:</strong> Insecta</li>
+                        <li><strong>Order:</strong> Coleoptera (Beetles)</li>
+                        <li><strong>Family:</strong> Dryophthoridae</li>
+                        <li><strong>Genus:</strong> <em>Mahakamia</em></li>
+                        <li><strong>Species:</strong> <em>M. kampmeinerti</em></li>
+                    </ul>
+                </div>
+
+                <div class="bg-white/10 p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-3xl font-bold mb-4 text-[#ff7c43]">Morphology at a Glance</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white/10 p-4 rounded-lg">
+                            <h4 class="text-xl font-bold text-[#ffa600]">Impressive Size</h4>
+                            <p class="text-gray-200">Reaching a body length of up to <span class="text-3xl font-extrabold">69mm</span>, it is one of the larger species in its family.</p>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-lg">
+                            <h4 class="text-xl font-bold text-[#ffa600]">The "Long Arms"</h4>
+                            <p class="text-gray-200">Its most distinctive feature is its elongated forelegs, a sexually dimorphic trait likely used by males in contests for mates.</p>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-lg">
+                            <h4 class="text-xl font-bold text-[#ffa600]">Vivid Coloration</h4>
+                            <p class="text-gray-200">Described as having striking patterns and colors, though specific details are sparse in scientific literature.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="distribution" class="bg-white/10 p-6 rounded-2xl shadow-lg">
+                <h3 class="text-3xl font-bold text-center mb-6 text-[#ff7c43]">Geographical Distribution</h3>
+                <p class="text-center text-gray-300 max-w-2xl mx-auto mb-8">Confirmed sightings are concentrated in the biodiverse rainforests of Southeast Asia, indicating a dependence on intact forest ecosystems.</p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <div class="bg-[#2f4b7c] p-4 rounded-lg text-center w-64">
+                        <span class="text-4xl">ID</span>
+                        <h4 class="text-xl font-bold mt-2">Indonesia</h4>
+                        <p class="text-gray-300">Borneo, including the type locality in the Upper Mahakam River Basin.</p>
+                    </div>
+                    <div class="bg-[#2f4b7c] p-4 rounded-lg text-center w-64">
+                        <span class="text-4xl">MY</span>
+                        <h4 class="text-xl font-bold mt-2">Malaysia</h4>
+                        <p class="text-gray-300">Peninsular Malaysia, specifically records from the Tapah Hills.</p>
+                    </div>
+                    <div class="bg-[#665191] p-4 rounded-lg text-center w-64">
+                         <span class="text-4xl">KM</span>
+                        <h4 class="text-xl font-bold mt-2">Comoros</h4>
+                        <p class="text-gray-300">A historical record exists, but this is geographically isolated and requires verification.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="market-conservation" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white/10 p-6 rounded-2xl shadow-lg flex flex-col">
+                    <h3 class="text-3xl font-bold mb-4 text-[#ff7c43]">A Collector's Prize</h3>
+                     <p class="text-gray-300 mb-4">The species' impressive size and appearance have made it a desirable item in the entomological trade. This chart compares observed prices from online specimen dealers.</p>
+                    <div class="chart-container h-72">
+                        <canvas id="priceComparisonChart"></canvas>
+                    </div>
+                     <button id="generateStoryBtn" class="mt-4 w-full bg-[#ffa600] hover:bg-[#ff7c43] text-white font-bold py-2 px-4 rounded-lg transition-colors">✨ Create Specimen Story</button>
+                </div>
+                <div class="bg-white/10 p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-3xl font-bold mb-4 text-[#ff7c43]">Conservation Profile</h3>
+                    <p class="text-gray-300 mb-4">While officially "Not Evaluated" by the IUCN, its reliance on specific forest habitats makes it vulnerable. This profile analyzes its conservation standing.</p>
+                     <div class="chart-container h-80">
+                        <canvas id="conservationSwotChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ecology" class="bg-white/10 p-6 rounded-2xl shadow-lg">
+                <h3 class="text-3xl font-bold text-center mb-6 text-[#ff7c43]">Inferred Ecology & Life Cycle</h3>
+                <p class="text-center text-gray-300 max-w-3xl mx-auto mb-8">While direct observation is limited, the biology of its relatives in the Dryophthorinae subfamily allows for strong inferences about its life cycle and ecological role.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <div>
+                        <h4 class="text-2xl font-semibold mb-4 text-center text-[#ffa600]">Life Cycle Flow</h4>
+                        <div class="relative pl-8">
+                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-500"></div>
+                            <div class="mb-8 relative">
+                                <div class="absolute -left-[2.1rem] top-1.5 w-8 h-8 bg-[#f95d6a] rounded-full flex items-center justify-center font-bold">1</div>
+                                <h5 class="text-xl font-bold">Egg</h5>
+                                <p class="text-gray-300">Female uses her rostrum to bore into a host plant, likely a decaying monocot, and lays eggs inside.</p>
+                            </div>
+                            <div class="mb-8 relative">
+                                <div class="absolute -left-[2.1rem] top-1.5 w-8 h-8 bg-[#d45087] rounded-full flex items-center justify-center font-bold">2</div>
+                                <h5 class="text-xl font-bold">Larva (Grub)</h5>
+                                <p class="text-gray-300">Legless, C-shaped larvae hatch and feed on the internal tissues of the host, contributing to decomposition.</p>
+                            </div>
+                            <div class="mb-8 relative">
+                                 <div class="absolute -left-[2.1rem] top-1.5 w-8 h-8 bg-[#a05195] rounded-full flex items-center justify-center font-bold">3</div>
+                                <h5 class="text-xl font-bold">Pupa</h5>
+                                <p class="text-gray-300">After growing, the larva pupates within a chamber inside the host plant, undergoing metamorphosis.</p>
+                            </div>
+                             <div class="relative">
+                                 <div class="absolute -left-[2.1rem] top-1.5 w-8 h-8 bg-[#665191] rounded-full flex items-center justify-center font-bold">4</div>
+                                <h5 class="text-xl font-bold">Adult</h5>
+                                <p class="text-gray-300">The adult beetle emerges to feed, reproduce, and restart the cycle.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-2xl font-semibold mb-4 text-center text-[#ffa600]">Ecological Role</h4>
+                        <div class="space-y-4">
+                            <div class="swot-card">
+                                <h5 class="text-xl font-bold flex items-center"><span class="text-2xl mr-3">🌴</span>Host Plant Specialist</h5>
+                                <p class="text-gray-300 mt-1">Strongly associated with large monocotyledonous plants like palms or bamboo, crucial for larval development.</p>
+                            </div>
+                             <div class="swot-card">
+                                <h5 class="text-xl font-bold flex items-center"><span class="text-2xl mr-3">♻️</span>Nutrient Cycler</h5>
+                                <p class="text-gray-300 mt-1">By breaking down decaying plant matter, it plays a vital role in returning nutrients to the forest floor.</p>
+                            </div>
+                             <div class="swot-card flex flex-col">
+                                <h5 class="text-xl font-bold flex items-center"><span class="text-2xl mr-3">❓</span>Knowledge Gaps</h5>
+                                <p class="text-gray-300 mt-1 flex-grow">Specific host plants, natural predators, and population dynamics remain major areas for future research.</p>
+                                <button id="generateHypothesisBtn" class="mt-3 w-full bg-[#ffa600] hover:bg-[#ff7c43] text-white font-bold py-2 px-4 rounded-lg transition-colors">✨ Generate Ecological Hypothesis</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-white/20">
+            <p class="text-gray-400">Infographic created with Chart.js and powered by the Gemini API.</p>
+        </footer>
+    </div>
+    
+    <div id="geminiModal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+        <div class="bg-[#2f4b7c] rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div class="p-4 border-b border-white/20 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-2xl font-bold text-[#ffa600]"></h3>
+                <button id="closeModalBtn" class="text-white text-3xl hover:text-gray-300">&times;</button>
+            </div>
+            <div id="modalContent" class="p-6 overflow-y-auto">
+                <div class="flex flex-col items-center justify-center h-48">
+                    <div class="loader"></div>
+                    <p class="mt-4 text-lg">Generating insights...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const processLabel = (label) => {
+                const maxLength = 16;
+                if (label.length <= maxLength) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxLength) {
+                        lines.push(currentLine.trim());
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                if (currentLine) {
+                    lines.push(currentLine.trim());
+                }
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+            
+            const brilliantBluesPalette = {
+                primary: '#ffa600',
+                secondary: '#ff7c43',
+                accent1: '#f95d6a',
+                accent2: '#d45087',
+                accent3: '#a05195',
+                accent4: '#665191',
+                accent5: '#2f4b7c',
+                base: '#003f5c',
+                text: '#FFFFFF',
+                grid: 'rgba(255, 255, 255, 0.2)'
+            };
+
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: brilliantBluesPalette.text,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: brilliantBluesPalette.grid
+                        },
+                        ticks: {
+                            color: brilliantBluesPalette.text
+                        }
+                    },
+                    x: {
+                        grid: {
+                            color: brilliantBluesPalette.grid
+                        },
+                        ticks: {
+                            color: brilliantBluesPalette.text
+                        }
+                    }
+                }
+            };
+
+            const priceCtx = document.getElementById('priceComparisonChart').getContext('2d');
+            new Chart(priceCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['eBay Listing', 'NaturShowroom (Papered)', 'NaturShowroom (Spread)'],
+                    datasets: [{
+                        label: 'Price (USD)',
+                        data: [39.90, 49.00, 68.00],
+                        backgroundColor: [brilliantBluesPalette.accent1, brilliantBluesPalette.accent2, brilliantBluesPalette.accent3],
+                        borderColor: [brilliantBluesPalette.accent1, brilliantBluesPalette.accent2, brilliantBluesPalette.accent3],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    scales: {
+                         y: {
+                            beginAtZero: true,
+                             grid: { color: brilliantBluesPalette.grid },
+                             ticks: { color: brilliantBluesPalette.text, callback: function(value) { return '$' + value; } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: brilliantBluesPalette.text }
+                        }
+                    }
+                }
+            });
+
+            const conservationCtx = document.getElementById('conservationSwotChart').getContext('2d');
+            new Chart(conservationCtx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Ecological Significance', 
+                        'Data Availability',
+                        'Public Appeal (Flagship Potential)', 
+                        'Habitat Security', 
+                        'Collection Pressure'
+                    ],
+                    datasets: [{
+                        label: 'Conservation Profile Score (1-5)',
+                        data: [4, 1, 4, 2, 3],
+                        backgroundColor: 'rgba(249, 93, 106, 0.4)',
+                        borderColor: brilliantBluesPalette.accent1,
+                        pointBackgroundColor: brilliantBluesPalette.accent1,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: brilliantBluesPalette.accent1,
+                    }]
+                },
+                options: {
+                    ...chartOptions,
+                    scales: {
+                        r: {
+                            angleLines: { color: brilliantBluesPalette.grid },
+                            grid: { color: brilliantBluesPalette.grid },
+                            pointLabels: { 
+                                color: brilliantBluesPalette.text,
+                                font: {
+                                    size: 12
+                                } 
+                            },
+                            ticks: { 
+                                color: brilliantBluesPalette.text, 
+                                backdropColor: 'transparent',
+                                stepSize: 1
+                            },
+                            min: 0,
+                            max: 5
+                        }
+                    },
+                     plugins: {
+                        legend: {
+                            labels: {
+                                color: brilliantBluesPalette.text
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const modal = document.getElementById('geminiModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const generateHypothesisBtn = document.getElementById('generateHypothesisBtn');
+            const generateStoryBtn = document.getElementById('generateStoryBtn');
+            
+            const loadingHTML = `<div class="flex flex-col items-center justify-center h-48"><div class="loader"></div><p class="mt-4 text-lg">Generating insights...</p></div>`;
+
+            const callGeminiAPI = async (prompt) => {
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`API call failed with status: ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        return text.replace(/\n/g, '<br>');
+                    } else {
+                        return "No content was generated. The response structure might be unexpected.";
+                    }
+                } catch (error) {
+                    console.error("Error calling Gemini API:", error);
+                    return `An error occurred while generating content: ${error.message}. Please check the console for details.`;
+                }
+            };
+
+            const openModal = (title, prompt) => {
+                modalTitle.textContent = title;
+                modalContent.innerHTML = loadingHTML;
+                modal.classList.remove('hidden');
+
+                callGeminiAPI(prompt).then(generatedText => {
+                    modalContent.innerHTML = `<p>${generatedText}</p>`;
+                });
+            };
+
+            generateHypothesisBtn.addEventListener('click', () => {
+                const prompt = "You are a creative biologist. Based on the following information about the weevil Mahakamia kampmeinerti (Family: Dryophthoridae, found in Southeast Asian rainforests, has long forelimbs, larvae likely develop in monocots like palms), generate a plausible and detailed scientific hypothesis about its specific mating rituals. Consider the function of the long 'arms' in your hypothesis.";
+                openModal("✨ Ecological Hypothesis", prompt);
+            });
+            
+            generateStoryBtn.addEventListener('click', () => {
+                const prompt = "You are an insect collector specializing in rare Coleoptera for the international market. Write a short, exciting narrative (2-3 paragraphs) about the challenges and thrill of acquiring a perfect, A+ grade specimen of the giant long-armed weevil, Mahakamia kampmeinerti, from the deep rainforests of Malaysia's Tapah Hills.";
+                openModal("✨ A Collector's Tale", prompt);
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if(e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
-
 </html>
